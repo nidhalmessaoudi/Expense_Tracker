@@ -1,8 +1,28 @@
 import "./ExpenseForm.css";
 
-function ExpenseForm() {
+function ExpenseForm(props) {
+  function submitHandler(e) {
+    e.preventDefault();
+
+    const titleEl = e.target.querySelector('input[type="text"]');
+    const amountEl = e.target.querySelector('input[type="number"]');
+    const dateEl = e.target.querySelector('input[type="date"]');
+
+    const expenseData = {
+      title: titleEl.value,
+      amount: amountEl.value,
+      date: new Date(dateEl.value),
+    };
+
+    props.onSaveExpenseData(expenseData);
+
+    titleEl.value = "";
+    amountEl.value = "";
+    dateEl.value = "";
+  }
+
   return (
-    <form>
+    <form onSubmit={submitHandler}>
       <div className="new-expense__controls">
         <div className="new-expense__control">
           <label>Title</label>
@@ -18,6 +38,9 @@ function ExpenseForm() {
         </div>
       </div>
       <div className="new-expense__actions">
+        <button type="button" onClick={props.onCancelNewExpense}>
+          Cancel
+        </button>
         <button type="submit">Add Expense</button>
       </div>
     </form>
